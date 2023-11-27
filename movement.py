@@ -47,6 +47,20 @@ the_connection.mav.param_set_send(
     mavutil.mavlink.MAV_PARAM_TYPE_REAL32
 )
 
+the_connection.mav.param_set_send(
+    the_connection.target_system, the_connection.target_component,
+    b'WPNAV_SPEED_DN',
+    500,
+    mavutil.mavlink.MAV_PARAM_TYPE_REAL32
+)
+
+the_connection.mav.param_set_send(
+    the_connection.target_system, the_connection.target_component,
+    b'PILOT_SPEED_DN',
+    500,
+    mavutil.mavlink.MAV_PARAM_TYPE_REAL32
+)
+
 msg = the_connection.recv_match(type='COMMAND_ACK',blocking= True)
 print(msg)
 
@@ -61,7 +75,7 @@ print(msg)
 #     )
 # )
 
-
+ 
 the_connection.mav.send(
     mavutil.mavlink.MAVLink_set_position_target_local_ned_message(
         0,
@@ -69,6 +83,37 @@ the_connection.mav.send(
         the_connection.target_component,
         mavutil.mavlink.MAV_FRAME_LOCAL_OFFSET_NED,
         int(0b111111000000),
-        150,0,50,0,0,0,0,0,0,0,0
+        250,0,60,0,0,0,0,0,0,0,0
     )
 )
+
+# the_connection.mav.send(
+#     mavutil.mavlink.MAVLink_set_position_target_local_ned_message(
+#         0,
+#         the_connection.target_system,
+#         the_connection.target_component,
+#         mavutil.mavlink.MAV_FRAME_LOCAL_OFFSET_NED,
+#         int(0b111111000000),
+#         0,0,40,0,0,0,0,0,0,0,0
+#     )
+# )
+
+the_connection.mav.command_long_send(
+    the_connection.target_system,
+    the_connection.target_component,
+    mavutil.mavlink.MAV_CMD_DO_CHANGE_SPEED,
+    0,mavutil.mavlink.SPEED_TYPE_GROUNDSPEED,
+    60,0,0,0,0,0
+)
+
+
+the_connection.mav.command_long_send(
+    the_connection.target_system,
+    the_connection.target_component,
+    mavutil.mavlink.MAV_CMD_DO_CHANGE_SPEED,
+    0,
+    3,
+    3,0,0,0,0,0
+)
+
+# -353606568
